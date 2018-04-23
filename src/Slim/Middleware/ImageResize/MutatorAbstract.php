@@ -58,7 +58,7 @@ abstract class MutatorAbstract implements MutatorInterface
             }
 
             $extra["source"] = $_SERVER["DOCUMENT_ROOT"] . "/" . $pathinfo["dirname"] . "/" .
-                               $matches["original"] . "." . $pathinfo["extension"];
+                              str_replace("%20", " ", $matches["original"]) . "." . $pathinfo["extension"];
 
             $parsed = array_merge($matches, $pathinfo, $extra);
             $this->options($parsed);
