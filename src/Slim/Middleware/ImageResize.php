@@ -54,10 +54,15 @@ class ImageResize extends \Slim\Middleware
         $resource = $request->getResourceUri();
 
         $target   = $folder . $resource;
-        if ($matched = $this->mutator->parse($target)) {
-            /* Extract array variables to current symbol table */
-            extract($matched);
-        };
+        
+        try {
+          if ($matched = $this->mutator->parse($target)) {
+              /* Extract array variables to current symbol table */
+              extract($matched);
+          };
+        } catch (\Intervention\Image\Exception\NotReadableException $e) {
+          $this->app->notFound();
+        }
 
         if ($matched && $this->allowed(array("extension" => $extension, "size" => $size, "signature" => $signature))) {
 
