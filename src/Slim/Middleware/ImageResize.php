@@ -61,8 +61,11 @@ class ImageResize extends \Slim\Middleware
               extract($matched);
           };
         } catch (\Intervention\Image\Exception\NotReadableException $e) {
-          $this->app->notFound();
+          http_response_code(404);
+          echo "<h1>404 - Image could not be found.</h1>";
+          exit;
         }
+
 
         if ($matched && $this->allowed(array("extension" => $extension, "size" => $size, "signature" => $signature))) {
 
