@@ -26,18 +26,22 @@ class ImageResize extends \Slim\Middleware
 
     public function __construct($options = null)
     {
+        $extensions = ["jpg", "jpeg", "png", "gif"];
 
         /* Default options. */
-        $this->options = array(
-            "extensions" => array("jpg", "jpeg", "png", "gif"),
+        $this->options = [
+            "extensions" => $extensions,
             "cache" => "cache",
             "sizes" => null,
             "secret" => null,
             "mutator" => new DefaultMutator()
-        );
+        ];
 
         if ($options) {
             $this->options = array_merge($this->options, (array)$options);
+
+            // add the uppercase variants of these extensions.
+            $this->options["extensions"] = array_merge($this->options["extensions"], array_map("strtoupper", $this->options["extensions"])); 
         }
 
         /* TODO: Use proper DI. */
